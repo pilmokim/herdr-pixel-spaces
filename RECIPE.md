@@ -20,6 +20,8 @@ else about the list is Herdr's.
   terminal (a `>_` prompt), coffee, bomb, star. All original drawings.
 - Worktree rows keep Herdr's branch icon and no sprite; the narrow rail keeps Herdr's number and
   status glyph.
+- The Go to picker (`cmd-p`) shows the same sprite, same color, in each space's heading row in
+  place of the 18px letter tile.
 
 ## How it behaves
 
@@ -43,6 +45,10 @@ else about the list is Herdr's.
   color and the sprite bookkeeping in `if (spaces().length)`.
 - `sprites.js`: `SPRITES` (name to 8 strings of 8 chars), `NAMES`, `sprite()` (each row's runs of
   one character become one `div` of width `2 * run`, height 2), `assign()`.
+- Mod `mods/pixel-picker/`: Herdr's `picker` cloned with `mod.clone`. The heading row's avatar
+  holds `sprite(shared("space.sprites")[id], spaceColor(t, w), ...)`; `spaceColors()` returns the
+  stored colors untouched when `spaces()` is empty. It only reads `space.sprites`. Its own copy of
+  `sprites.js`. `keys.json`: `"cmd-p": "mod.open:pixel-picker"` in `global`.
 - `herdr` functions: `spaces`, `shared`, `setShared`, `theme`, plus everything Herdr's mod uses.
   No programs, no network, no files outside the mod.
 
@@ -54,6 +60,10 @@ else about the list is Herdr's.
 - Option is Alt only where Herdr sends it as Alt (`option_as_alt`, "auto" on US/ABC layouts). On
   other keyboard layouts, set `"option_as_alt": "on"` in settings.json for option-click.
 - Herdr doesn't watch a symlinked mod folder; copy it rather than link it.
+- A mod can't import from another mod's folder (`../pixel-spaces/sprites.js` is refused as
+  outside the mod), so each mod carries `sprites.js`; keep the copies identical.
+- The sidebar's search button (shipped `workspace-chrome`) opens the shipped `picker`, not this
+  one.
 - Sprites must be exactly 8×8 and use only `.`, `x`, `o`, `k`.
 
 ## Done when
@@ -61,5 +71,6 @@ else about the list is Herdr's.
 - Every non-worktree space row shows a sprite in its color and no letter tile.
 - A new space gets a sprite not yet used by the shown spaces (while fewer than 15 spaces show).
 - Option-click on a sprite changes it to the next one and leaves the selected space as it was.
-- `herdr-app check mods/pixel-spaces` passes and leaves `space.colors` and `space.sprites` in
-  `shared.json` unchanged.
+- `herdr-app check mods/pixel-spaces` and `herdr-app check mods/pixel-picker` pass and leave
+  `space.colors` and `space.sprites` in `shared.json` unchanged.
+- `cmd-p` opens the picker with each space's sprite beside its name, matching the sidebar.

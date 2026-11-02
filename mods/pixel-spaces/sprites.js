@@ -1,5 +1,7 @@
 // 8x8 pixel sprites for space avatars. Drawn for Herdr, not taken from any game.
 // "." clear, "x" the space's color, "o" white, "k" near-black.
+// pixel-spaces and pixel-picker each carry this file (a mod can't import from another
+// mod's folder): change both copies together.
 
 export const SPRITES = {
   slime: [
