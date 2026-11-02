@@ -1,21 +1,29 @@
 # Herdr Pixel Spaces
 
-Pixel-art avatars for the spaces list of the [Herdr](https://herdr.dev) desktop app. Instead of a
-colored tile with the space's first letter, each space gets a little 8×8 sprite in its color: a
-slime, a ghost, a frog, a potion...
+A pixel-art sidebar for the [Herdr](https://herdr.dev) desktop app. Each space wears a little 8×8
+sprite in its color instead of a letter tile, the Go to picker shows the same sprites, and the
+sidebar's header drops Herdr's logo for the one thing worth seeing up there: whether an agent is
+waiting for you.
 
-![Pixel sprites in the spaces list](preview.png)
+![The sidebar: a red bell for one agent waiting, and pixel sprites for each space](preview.png)
 
-- **15 sprites.** slime, ghost, cat, robot, mushroom, octopus, skull, heart, potion, frog, rocket,
-  terminal, coffee, bomb and star. All drawn for this mod, not taken from any game.
-- **One per space, kept.** A new space gets the sprite used least so far, and keeps it.
-- **Your pick.** Option-click (Alt-click) a sprite to step to the next one. A plain click still
-  opens the space.
-- **Still Herdr's spaces list.** It's Herdr's own `spaces` mod with only the avatar changed:
-  colors, worktrees under their repo, branch and ahead/behind, a group per machine, the
-  right-click menu and drag to reorder all work as before.
-- **In the Go to picker too.** `pixel-picker` is Herdr's `picker` (`cmd-p`) with the same
-  sprites next to each space's name.
+## What you get
+
+- **Pixel sprites for spaces.** 15 sprites: slime, ghost, cat, robot, mushroom, octopus, skull,
+  heart, potion, frog, rocket, terminal, coffee, bomb and star, all drawn for this repo. A new
+  space gets the sprite used least so far and keeps it. **Option-click** (Alt-click) a sprite to
+  step to the next one; a plain click still opens the space.
+- **The same sprites in the Go to picker** (`cmd-p`, and the sidebar's search button), next to
+  each space's name.
+- **A header that only says who's waiting.** Where Herdr shows its logo and name, a pixel bell
+  and a count appear when agents wait for you: blocked on a question or a permission, or done
+  while you weren't looking. Blue when they're only done, the blocked color when any is blocked,
+  nothing at all when none wait. Click it to go to the most urgent one (blocked first, then the
+  most recently finished).
+- **Still Herdr's sidebar.** These are Herdr's own `spaces`, `picker` and `workspace-chrome` mods
+  with only those parts changed: space colors, worktrees under their repo, branch and
+  ahead/behind, a group per machine, the right-click menu, drag to reorder, picker search and
+  keys all work as before.
 
 ![All 15 sprites](sprites.png)
 
@@ -25,28 +33,32 @@ Ask your agent: "add https://github.com/pilmokim/herdr-pixel-spaces to my Herdr 
 
 ```sh
 git clone https://github.com/pilmokim/herdr-pixel-spaces.git
-cp -R herdr-pixel-spaces/mods/pixel-spaces herdr-pixel-spaces/mods/pixel-picker ~/.config/herdr-app/mods/
-cp herdr-pixel-spaces/layouts/main-pixel.json ~/.config/herdr-app/layouts/
+cd herdr-pixel-spaces
+cp -R mods/pixel-spaces mods/pixel-picker mods/pixel-chrome ~/.config/herdr-app/mods/
+cp layouts/main-pixel.json ~/.config/herdr-app/layouts/
 herdr-app do layout.switch '{"name":"main-pixel"}'
 ```
 
-`main-pixel` is Herdr's own `main` layout (0.1.11) with the spaces list swapped for this one.
-`cmd-shift-l` switches back to any other layout.
+`main-pixel` is Herdr's own `main` layout (0.1.11) with the header and the spaces list swapped
+for these mods. `cmd-shift-l` switches back to any other layout.
 
-For the picker, point `cmd-p` at it in `~/.config/herdr-app/keys.json` (this repo's `keys.json`
-has the line to merge):
+Then point `cmd-p` at the pixel picker in `~/.config/herdr-app/keys.json` (this repo's
+`keys.json` has the line to merge):
 
 ```json
 { "global": { "cmd-p": "mod.open:pixel-picker" } }
 ```
 
-The sidebar's search button still opens Herdr's own picker.
+Option-click needs Option to reach Herdr as Alt. That's automatic on US and ABC keyboard layouts;
+on others (Korean 2-Set, for one) add `"option_as_alt": "on"` to
+`~/.config/herdr-app/settings.json`.
 
 ### Your own layout
 
-In a layout of your own, point the spaces block at this mod:
+In a layout of your own, point its blocks at these mods:
 
 ```json
+{ "id": "brand", "type": "block", "size": { "px": 46 }, "content": { "mod": "pixel-chrome" } },
 { "id": "spaces", "type": "block", "size": { "weight": 1 }, "min": 90, "content": { "mod": "pixel-spaces" } }
 ```
 
@@ -74,12 +86,13 @@ a copy of the same file (a Herdr mod can't import from another mod's folder): ch
 ## How it's kept
 
 Each space's sprite is stored by space id in Herdr's shared mod state (`space.sprites`), next to
-the colors Herdr already keeps there (`space.colors`). Unlike the shipped mods, these two leave
-both alone when they see no spaces at all, so a `herdr-app check` run doesn't wipe everyone's
-colors.
+the colors Herdr already keeps there (`space.colors`). A color there can be a `#rrggbb` as well
+as one of Herdr's six. Unlike the shipped mods, these leave both alone when they see no spaces
+at all, so a `herdr-app check` run doesn't wipe everyone's colors.
 
 ## License
 
-Apache-2.0. `mods/pixel-spaces/main.js` and `mods/pixel-picker/main.js` are Herdr's `spaces` and
-`picker` mods (Apache-2.0) with the avatar changed, as their headers say; `sprites.js` and the
-sprites are new.
+Apache-2.0. The three mods' `main.js` files are Herdr's `spaces`, `picker` and
+`workspace-chrome` mods (Apache-2.0) with the changes their headers describe. The `search`,
+`sidebar`, `settings` and `plus` glyphs in `mods/pixel-chrome/` are Lucide's (ISC, see
+`mods/pixel-chrome/LICENSE-Lucide.txt`). `sprites.js`, the sprites and the bell are new.
