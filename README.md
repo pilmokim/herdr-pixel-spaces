@@ -1,9 +1,9 @@
 # Herdr Pixel Spaces
 
 A pixel-art sidebar for the [Herdr](https://herdr.dev) desktop app. Each space wears a little 8×8
-sprite in its color instead of a letter tile, the Go to picker shows the same sprites, and the
-sidebar's header drops Herdr's logo for the one thing worth seeing up there: whether an agent is
-waiting for you.
+sprite in its color instead of a letter tile, the Go to picker shows the same sprites, Claude Code
+and Codex get 9×9 pixel icons, and the sidebar's header drops Herdr's logo for the one thing worth
+seeing up there: whether an agent is waiting for you.
 
 ![The sidebar: a red bell for one agent waiting, and pixel sprites for each space](preview.png)
 
@@ -20,12 +20,19 @@ waiting for you.
   while you weren't looking. Blue when they're only done, the blocked color when any is blocked,
   nothing at all when none wait. Click it to go to the most urgent one (blocked first, then the
   most recently finished).
+- **Pixel agent icons.** Claude Code gets an orange pixel spark, Codex a blue pixel `>_`, both
+  9×9, one color each, in the agents list and wherever Herdr shows a program's icon (it reads
+  them from one table). They're a `programs.json` entry and two SVGs, no code.
 - **Still Herdr's sidebar.** These are Herdr's own `spaces`, `picker` and `workspace-chrome` mods
   with only those parts changed: space colors, worktrees under their repo, branch and
   ahead/behind, a group per machine, the right-click menu, drag to reorder, picker search and
   keys all work as before.
 
 ![All 15 sprites](sprites.png)
+
+![Pixel Claude Code and Codex icons in the agents list](agents.png)
+
+![The two agent icons, enlarged and at sidebar size](agent-icons.png)
 
 ## Install
 
@@ -47,6 +54,14 @@ Then point `cmd-p` at the pixel picker in `~/.config/herdr-app/keys.json` (this 
 
 ```json
 { "global": { "cmd-p": "mod.open:pixel-picker" } }
+```
+
+For the agent icons, copy the folder and merge this repo's `programs.json` into
+`~/.config/herdr-app/programs.json` (or copy it there if you have none):
+
+```sh
+cp -R pixel-icons ~/.config/herdr-app/
+cp programs.json ~/.config/herdr-app/    # only if you don't have one yet
 ```
 
 Option-click needs Option to reach Herdr as Alt. That's automatic on US and ABC keyboard layouts;
@@ -95,4 +110,9 @@ at all, so a `herdr-app check` run doesn't wipe everyone's colors.
 Apache-2.0. The three mods' `main.js` files are Herdr's `spaces`, `picker` and
 `workspace-chrome` mods (Apache-2.0) with the changes their headers describe. The `search`,
 `sidebar`, `settings` and `plus` glyphs in `mods/pixel-chrome/` are Lucide's (ISC, see
-`mods/pixel-chrome/LICENSE-Lucide.txt`). `sprites.js`, the sprites and the bell are new.
+`mods/pixel-chrome/LICENSE-Lucide.txt`). `sprites.js`, the sprites, the bell and the two agent
+icons are new.
+
+Claude Code is a trademark of Anthropic and Codex of OpenAI. The agent icons are original pixel
+glyphs (an asterisk and a prompt) drawn for this repo, not their logos, and this project isn't
+affiliated with or endorsed by either company.

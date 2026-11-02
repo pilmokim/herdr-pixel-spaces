@@ -1,8 +1,9 @@
 # Pixel Spaces
 
 Herdr's sidebar in pixel art. Each space wears a small 8×8 sprite in its own color where Herdr
-shows a tile with the first letter, the Go to picker shows the same sprites, and the header keeps
-only a pixel bell that counts the agents waiting for you. Everything else is Herdr's.
+shows a tile with the first letter, the Go to picker shows the same sprites, Claude Code and Codex
+get 9×9 pixel icons, and the header keeps only a pixel bell that counts the agents waiting for
+you. Everything else is Herdr's.
 
 ![Pixel Spaces](preview.png)
 
@@ -26,6 +27,10 @@ only a pixel bell that counts the agents waiting for you. Everything else is Her
   status glyph and hides the bell.
 - **Go to picker** (`cmd-p` and the header's search button): each space's heading row shows its
   sprite, same color, in place of the 18px letter tile.
+- **Agent icons**: Claude Code is a 9×9 pixel spark (8 rays; the horizontal and vertical ones
+  run to the edge, the diagonals are two dots each, a 3×3 core), all #D97757. Codex is a 9×9
+  pixel `>_`: a 2-pixel-thick `>` over rows 1–5 and a 5-pixel `_` on row 7, all #7A9DFF. No tile
+  behind either.
 
 ## How it behaves
 
@@ -64,6 +69,10 @@ only a pixel bell that counts the agents waiting for you. Everything else is Her
   `sprite(shared("space.sprites")[id], spaceColor(t, w), ...)`; `spaceColors()` returns the stored
   colors untouched when `spaces()` is empty. It only reads `space.sprites`. Its own copy of
   `sprites.js`. `keys.json`: `"cmd-p": "mod.open:pixel-picker"` in `global`.
+- Agent icons: `pixel-icons/claude.svg` and `pixel-icons/codex.svg` (`viewBox="0 0 9 9"`, one
+  `rect` per run of a row, `shape-rendering="crispEdges"`), and `programs.json`:
+  `"claude": { "icon": "pixel-icons/claude.svg", "tint": false }` and the same for `"codex"`.
+  Herdr's program table gives every mod the same icon.
 - `herdr` functions: `agents`, `spaces`, `shared`, `setShared`, `theme`, `run`, plus everything
   Herdr's mods use. No programs, no network, no files outside the mods.
 
@@ -81,7 +90,10 @@ only a pixel bell that counts the agents waiting for you. Everything else is Her
   outside the mod), so each mod carries `sprites.js`; keep the copies identical.
 - Sprites must be exactly 8×8 and use only `.`, `x`, `o`, `k`.
 - To see the bell without a real agent waiting, a terminal can report a status itself:
-  `printf '\033]7501;state=blocked:app=demo\007'`.
+  `printf '\033]7501;state=blocked:app=demo\007'` (`app=claude-code` or `app=codex` shows that
+  agent's icon).
+- The agent icons stand for third-party products: keep them original glyphs, not traced logos,
+  and keep the trademark notice in the README.
 
 ## Done when
 
@@ -91,5 +103,7 @@ only a pixel bell that counts the agents waiting for you. Everything else is Her
 - A new space gets a sprite not yet used by the shown spaces (while fewer than 15 spaces show).
 - Option-click on a sprite changes it to the next one and leaves the selected space as it was.
 - `cmd-p` and the search button open the picker with each space's sprite beside its name.
+- A Claude Code agent shows the orange pixel spark and a Codex agent the blue pixel `>_` in the
+  agents list.
 - `herdr-app check` passes for all three mods and leaves `space.colors` and `space.sprites` in
   `shared.json` unchanged.
